@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('guest.token')->group(function(){
-    
+    Route::prefix('posts')->controller(PostController::class)->group(function(){
+        Route::post('/', 'create');
+        Route::put('/{post}', 'update');
+        Route::delete('/{post}', 'delete');
+    });
 });
 

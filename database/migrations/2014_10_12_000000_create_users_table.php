@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('email')->unique()->nullable();
-            $table->string('guest_token')->nullable();
+            $table->string('guest_token');
             $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();

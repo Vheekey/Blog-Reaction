@@ -5,8 +5,8 @@ namespace App\Http\Middleware;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\Cookie;
 
 class SetUserToken
 {
@@ -19,12 +19,10 @@ class SetUserToken
      */
     public function handle(Request $request, Closure $next)
     {
-        $cookie = $request->cookie('guest_token');
-
-        if(is_null($cookie)){
+        if(! isset($_COOKIE['guest_token'])){
             $token = $this->generateToken();
 
-            Cookie::create('guest_token', $token);
+            setcookie('guest_token', $token, time()+3600*24*30, '/');
         }
 
         return $next($request);
@@ -37,6 +35,8 @@ class SetUserToken
 
             $exists = User::where('guest_token', $token)->exists();
         } while ($exists);
+
+        User::create(['guest_token' => $token]);
 
         return $token;
     }
