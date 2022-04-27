@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Cookie;
 
 class Post extends Model
 {
@@ -28,7 +26,6 @@ class Post extends Model
 
     public function users()
     {
-        // dd($this->belongsTo(User::class, 'id', 'user_id')->toSql());
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
