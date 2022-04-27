@@ -2,11 +2,19 @@
 
 namespace App\Exceptions;
 
+use App\Traits\HasJsonResponse;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use HasJsonResponse;
+
     /**
      * A list of exception types with their corresponding custom log levels.
      *
@@ -44,7 +52,24 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+            $this->prepareException($e);
         });
+    }
+
+    protected function prepareException(Throwable $e)
+    {
+        if ($e instanceof ModelNotFoundException) {
+            return new NotFoundHttpException('Resource not found');
+        }
+    }
+
+    protected function convertHttpExceptionToJson(HttpException $exception): JsonResponse
+    {
+        $statusCode = $exception->getStatusCode();
+        $message = $exception->getMessage() ?: Response::$statusTexts[$statusCode];
+        $headers = $exception->getHeaders();
+        $data = null;
+
+        return $this->jsonResponse($statusCode, $message, $data, $headers);
     }
 }

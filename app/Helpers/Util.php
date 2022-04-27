@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 function getCookieImmediately()
 {
     $cookies = [];
@@ -15,4 +17,11 @@ function getCookieImmediately()
     $token = explode(';', $cookies['guest_token']);
 
     return $token[0];
+}
+
+function guestUser()
+{
+    $token = $_COOKIE['guest_token'] ?? getCookieImmediately();
+
+    return $user = User::where('guest_token', $token)->sole();
 }

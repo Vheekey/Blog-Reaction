@@ -11,7 +11,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     protected static function booted()
     {
@@ -24,5 +24,16 @@ class Post extends Model
         static::updating(function($post_update) use($token){
             $post_update->user_id = User::where('guest_token', $token)->value('id');
         });
+    }
+
+    public function users()
+    {
+        // dd($this->belongsTo(User::class, 'id', 'user_id')->toSql());
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }

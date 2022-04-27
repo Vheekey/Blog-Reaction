@@ -38,7 +38,7 @@ trait HasJsonResponse
             $message ?: 'Request was received', $normalizeData, $isSuccessful
         );
 
-        $responseData = ['success' => $isSuccessful, 'message' => $messageData['message']];
+        $responseData = ['message' => $messageData['message']];
 
         if (! $isSuccessful) {
             $responseData += $this->pullErrorCodeFromData($normalizeData, $message, $messageData['key']);
@@ -77,8 +77,8 @@ trait HasJsonResponse
 
         $this->useResponseWrapper = $wrap;
 
-        return $this->jsonResponse($response->status(), $message, $responseData)
-            ->withHeaders($response->headers);
+        return $this->jsonResponse($response->status(), $message, $responseData);
+            // ->withHeaders($response->headers);
     }
 
     /**
