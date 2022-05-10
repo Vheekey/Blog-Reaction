@@ -12,6 +12,6 @@ This is an application that depicts the basic functionalities of a blog. It is a
 
 ### Documentation
 All functions contained in this project are self explanatory. Documented Routes can be found below:
-[![Postman Documentation]](https://www.getpostman.com/collections/9e40afd17d55a167579a)
+[![Postman Documentation]](https://documenter.getpostman.com/view/5792960/UyxepUDf)
 
 ALL SET!
